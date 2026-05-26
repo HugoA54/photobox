@@ -32,14 +32,14 @@ function getComments(imageData: any): Promise<any> {
   );
 }
 
-getPicture(106);
-
 const hash = window.location.hash;
 if (hash) {
   const id = parseInt(hash.substring(1));
   if (!isNaN(id)) {
     getPicture(id);
   }
+} else {
+  getPicture(106);
 }
 
 let currentLinks: {
@@ -50,12 +50,14 @@ let currentLinks: {
 } = {};
 
 const btnGallery = document.getElementById("btn-load-gallery");
+
 if (btnGallery) {
   btnGallery.addEventListener("click", () => {
     load()
       .then((data) => {
         currentLinks = data.links;
         display_galerie(data);
+        updateGalleryButtons();
       })
       .catch((error: unknown) =>
         console.error("Erreur chargement galerie:", error),
@@ -70,6 +72,7 @@ if (btnGallery) {
         .then((data: any) => {
           currentLinks = data.links;
           display_galerie(data);
+          updateGalleryButtons();
         })
         .catch((error: unknown) =>
           console.error("Erreur chargement galerie précédente:", error),
@@ -85,6 +88,7 @@ if (btnGallery) {
         .then((data: any) => {
           currentLinks = data.links;
           display_galerie(data);
+          updateGalleryButtons();
         })
         .catch((error: unknown) =>
           console.error("Erreur chargement galerie suivante:", error),
@@ -100,6 +104,7 @@ if (btnGallery) {
         .then((data: any) => {
           currentLinks = data.links;
           display_galerie(data);
+          updateGalleryButtons();
         })
         .catch((error: unknown) =>
           console.error("Erreur chargement première galerie:", error),
@@ -115,26 +120,39 @@ if (btnGallery) {
         .then((data: any) => {
           currentLinks = data.links;
           display_galerie(data);
+          updateGalleryButtons();
         })
         .catch((error: unknown) =>
           console.error("Erreur chargement dernière galerie:", error),
         );
     });
   }
-}
 
-const currentPhoto = document.getElementById(
-  "la_photo",
-) as HTMLImageElement | null;
-const currentGallery = document.getElementById("la_galerie");
-if (currentPhoto && currentGallery) {
-  currentGallery.addEventListener("click", (e) => {
-    const target = e.target as HTMLElement;
-
-    const photoId = target.dataset.photoId;
-    console.log(photoId);
-    if (photoId) {
-      getPicture(parseInt(photoId));
+  function updateGalleryButtons() {
+    if (currentLinks.next) {
+      btnNextGallery?.removeAttribute("disabled");
+    } else {
+      btnNextGallery?.setAttribute("disabled", "true");
     }
-  });
+
+    if (currentLinks.prev) {
+      btnPrevGallery?.removeAttribute("disabled");
+    } else {
+      btnPrevGallery?.setAttribute("disabled", "true");
+    }
+
+    if (currentLinks.first) {
+      btnFirstGallery?.removeAttribute("disabled");
+    } else {
+      btnFirstGallery?.setAttribute("disabled", "true");
+    }
+
+    if (currentLinks.last) {
+      btnLastGallery?.removeAttribute("disabled");
+    } else {
+      btnLastGallery?.setAttribute("disabled", "true");
+    }
+  }
+
+  updateGalleryButtons();
 }
