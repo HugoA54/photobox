@@ -27,7 +27,7 @@ function getComments(imageData: any): Promise<any> {
     return loadResource("https://webetu.iutnc.univ-lorraine.fr" + imageData.links.comments.href);
 }
 
-getPicture(106);
+
 
 const hash = window.location.hash;
 if (hash) {
@@ -35,6 +35,8 @@ if (hash) {
     if (!isNaN(id)) {
         getPicture(id);
     }
+} else {
+    getPicture(106);
 }
 
 let currentLinks: { next?: { href: string }; prev?: { href: string }; first?: { href: string }; last?: { href: string } } = {};
