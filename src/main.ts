@@ -40,12 +40,14 @@ if (hash) {
 let currentLinks: { next?: { href: string }; prev?: { href: string }; first?: { href: string }; last?: { href: string } } = {};
 
 const btnGallery = document.getElementById("btn-load-gallery");
+
 if (btnGallery) {
     btnGallery.addEventListener("click", () => {
         load()
             .then((data) => {
                 currentLinks = data.links;
                 display_galerie(data);
+                updateGalleryButtons();
             })
             .catch((error: unknown) => console.error("Erreur chargement galerie:", error));
     });
@@ -59,6 +61,7 @@ if (btnPrevGallery) {
             .then((data: any) => {
                 currentLinks = data.links;
                 display_galerie(data);
+                updateGalleryButtons();
             })
             .catch((error: unknown) => console.error("Erreur chargement galerie précédente:", error));
     });
@@ -72,6 +75,7 @@ if (btnNextGallery) {
             .then((data: any) => {
                 currentLinks = data.links;
                 display_galerie(data);
+                updateGalleryButtons();
             })
             .catch((error: unknown) => console.error("Erreur chargement galerie suivante:", error));
     });
@@ -85,6 +89,7 @@ if (btnFirstGallery) {
             .then((data: any) => {
                 currentLinks = data.links;
                 display_galerie(data);
+                updateGalleryButtons();
             })
             .catch((error: unknown) => console.error("Erreur chargement première galerie:", error));
     });
@@ -98,8 +103,38 @@ if (btnLastGallery) {
             .then((data: any) => {
                 currentLinks = data.links;
                 display_galerie(data);
+                updateGalleryButtons();
             })
             .catch((error: unknown) => console.error("Erreur chargement dernière galerie:", error));
     });
 }
+
+
+function updateGalleryButtons() {
+    if (currentLinks.next) {
+        btnNextGallery?.removeAttribute("disabled");
+    } else {
+        btnNextGallery?.setAttribute("disabled", "true");
+    }
+
+    if (currentLinks.prev) {
+        btnPrevGallery?.removeAttribute("disabled");
+    } else {
+        btnPrevGallery?.setAttribute("disabled", "true");
+    }
+
+    if (currentLinks.first) {
+        btnFirstGallery?.removeAttribute("disabled");
+    } else {
+        btnFirstGallery?.setAttribute("disabled", "true");
+    }
+
+    if (currentLinks.last) {
+        btnLastGallery?.removeAttribute("disabled");
+    } else {
+        btnLastGallery?.setAttribute("disabled", "true");
+    }
+}
+
+updateGalleryButtons();
 }
