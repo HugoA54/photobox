@@ -11,7 +11,18 @@
     <p>{{titre}}</p>
     <img src="{{url}}" alt="{{titre}}">
     <p>{{descr}}</p>
-    <a href=" https://webetu.iutnc.univ-lorraine.fr{{categorie}}" target="_blank">{{categorie}}</a>
+  </script>
+
+  <script id="categorie-template" type="text/x-handlebars-template">
+    <p>Catégorie : {{nom}}</p>
+  </script>
+
+  <script id="comments-template" type="text/x-handlebars-template">
+    <ul>
+      {{#each comments}}
+      <li>({{pseudo}}) {{content}}</li>
+      {{/each}}
+    </ul>
   </script>
 
   <button id="btn-first-gallery">Première galerie</button>

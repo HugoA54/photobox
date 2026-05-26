@@ -190,7 +190,7 @@ if (lightbox) {
 
 
 function navigateLightbox(direction: 1 | -1): void {
-  if (currentPhotoId === null) return;
+  if (currentPhotoId) {
   const gallery = document.getElementById("la_galerie");
   if (gallery) {
   const figures = Array.from(gallery.querySelectorAll<HTMLElement>("[data-photo-id]"));
@@ -201,6 +201,7 @@ function navigateLightbox(direction: 1 | -1): void {
     getPicture(parseInt(next.dataset.photoId));
   }
   }
+}
 }
 
 document.getElementById("lightbox-prev")?.addEventListener("click", () => navigateLightbox(-1));
