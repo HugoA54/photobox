@@ -1,5 +1,4 @@
 import Handlebars from "handlebars";
-import { API_BASE_URL } from "./config.js";
 
 export interface Picture {
     titre: string;
@@ -32,29 +31,17 @@ export function displayPicture(picture: Picture): void {
 
 
 export function displayCategorie(categorieData: any): void {
+    const templateSource = document.getElementById("categorie-template") as HTMLScriptElement;
     const container = document.getElementById("la_categorie");
-    if (!container) {
-        console.error("Conteneur de catégorie introuvable");
-        return;
-    }
-    container.textContent = "Categorie: " + categorieData.categorie.nom;
+    if (!templateSource || !container) return;
+    const template = Handlebars.compile(templateSource.innerHTML);
+    container.innerHTML = template({ nom: categorieData.categorie.nom });
 }
 
-
 export function displayComments(commentsData: any): void {
+    const templateSource = document.getElementById("comments-template") as HTMLScriptElement;
     const container = document.getElementById("les_commentaires");
-    if(!container) {
-        console.error("Conteneur de commentaires introuvable");
-        return;
-    }
-    container.innerHTML = "";
-    const commentsArray = commentsData.comments;
-    const commentList = document.createElement("ul");
-
-    for (const comment of commentsArray) {
-        const commentElement = document.createElement("li");
-        commentElement.textContent = `(${comment.pseudo}) ${comment.content}`;
-        commentList.appendChild(commentElement);
-    }
-    container.appendChild(commentList);
+    if (!templateSource || !container) return;
+    const template = Handlebars.compile(templateSource.innerHTML);
+    container.innerHTML = template({ comments: commentsData.comments });
 }
