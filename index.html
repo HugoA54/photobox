@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Photobox</title>
+</head>
+<body>
+
+  <script id="photo-template" type="text/x-handlebars-template">
+    <p>{{titre}}</p>
+    <img style="max-width: 20%; height: 200px;" src="{{url}}" alt="{{titre}}">
+    <p>{{descr}}</p>
+    <a href=" https://webetu.iutnc.univ-lorraine.fr{{categorie}}" target="_blank">{{categorie}}</a>
+  </script>
+
+  <button id="btn-load-gallery">Charger la galerie</button>
+  <div id="la_galerie"></div>
+
+  <div id="la_photo"></div>
+  <div id="la_categorie"></div>
+  <h2>Commentaires :</h2>
+  <div id="les_commentaires"></div>
+
+
+
+
+    
+
+  <script src="dist/bundle.js"></script>
+</body>
+</html>

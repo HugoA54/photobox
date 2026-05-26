@@ -1,0 +1,21 @@
+{
+  "name": "photobox",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "esbuild src/main.ts --bundle --outfile=dist/bundle.js",
+    "start": "npm run build && npx serve ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "esbuild": "^0.28.0",
+    "typescript": "^6.0.3"
+  },
+  "dependencies": {
+    "handlebars": "^4.7.9"
+  }
+}
