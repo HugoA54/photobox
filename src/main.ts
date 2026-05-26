@@ -4,7 +4,10 @@ import { first, last, load, next, prev } from "./gallery.js";
 import { display_galerie } from "./gallery_ui.js";
 import type { Picture } from "./UI.js";
 
+let currentPhotoId: number | null = null;
+
 function getPicture(id: number): void {
+  currentPhotoId = id;
   loadPicture(id)
     .then((p: any) => {
       displayPicture(p);
@@ -183,4 +186,22 @@ if (lightbox) {
     }
   });
 }
-;
+
+
+
+function navigateLightbox(direction: 1 | -1): void {
+  if (currentPhotoId === null) return;
+  const gallery = document.getElementById("la_galerie");
+  if (gallery) {
+  const figures = Array.from(gallery.querySelectorAll<HTMLElement>("[data-photo-id]"));
+  const index = figures.findIndex((f) => parseInt(f.dataset.photoId!) === currentPhotoId);
+  const nextIndex = index + direction;
+  const next = figures[nextIndex];
+  if (next?.dataset.photoId) {
+    getPicture(parseInt(next.dataset.photoId));
+  }
+  }
+}
+
+document.getElementById("lightbox-prev")?.addEventListener("click", () => navigateLightbox(-1));
+document.getElementById("lightbox-next")?.addEventListener("click", () => navigateLightbox(1));
