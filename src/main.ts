@@ -2,104 +2,139 @@ import { loadPicture, loadResource } from "./photoloader.js";
 import { displayPicture, displayCategorie, displayComments } from "./UI.js";
 import { first, last, load, next, prev } from "./gallery.js";
 import { display_galerie } from "./gallery_ui.js";
+import type { Picture } from "./UI.js";
 
 function getPicture(id: number): void {
-    loadPicture(id)
-        .then((p: any) => {
-            displayPicture(p);
-            return Promise.all([getCategorie(p), getComments(p)]);
-        })
-        .then((data_array: any[]) => {
-            displayCategorie(data_array[0]);
-            displayComments(data_array[1]);
-        })
+  loadPicture(id)
+    .then((p: any) => {
+      displayPicture(p);
+      return Promise.all([getCategorie(p), getComments(p)]);
+    })
+    .then((data_array: any[]) => {
+      displayCategorie(data_array[0]);
+      displayComments(data_array[1]);
+    })
 
-        .catch((error: unknown) => {
-            console.error("Erreur lors du chargement:", error);
-        });
+    .catch((error: unknown) => {
+      console.error("Erreur lors du chargement:", error);
+    });
 }
 
 function getCategorie(imageData: any): Promise<any> {
-    return loadResource("https://webetu.iutnc.univ-lorraine.fr" + imageData.links.categorie.href);
+  return loadResource(
+    "https://webetu.iutnc.univ-lorraine.fr" + imageData.links.categorie.href,
+  );
 }
 
 function getComments(imageData: any): Promise<any> {
-    return loadResource("https://webetu.iutnc.univ-lorraine.fr" + imageData.links.comments.href);
+  return loadResource(
+    "https://webetu.iutnc.univ-lorraine.fr" + imageData.links.comments.href,
+  );
 }
 
 getPicture(106);
 
 const hash = window.location.hash;
 if (hash) {
-    const id = parseInt(hash.substring(1));
-    if (!isNaN(id)) {
-        getPicture(id);
-    }
+  const id = parseInt(hash.substring(1));
+  if (!isNaN(id)) {
+    getPicture(id);
+  }
 }
 
-let currentLinks: { next?: { href: string }; prev?: { href: string }; first?: { href: string }; last?: { href: string } } = {};
+let currentLinks: {
+  next?: { href: string };
+  prev?: { href: string };
+  first?: { href: string };
+  last?: { href: string };
+} = {};
 
 const btnGallery = document.getElementById("btn-load-gallery");
 if (btnGallery) {
-    btnGallery.addEventListener("click", () => {
-        load()
-            .then((data) => {
-                currentLinks = data.links;
-                display_galerie(data);
-            })
-            .catch((error: unknown) => console.error("Erreur chargement galerie:", error));
-    });
+  btnGallery.addEventListener("click", () => {
+    load()
+      .then((data) => {
+        currentLinks = data.links;
+        display_galerie(data);
+      })
+      .catch((error: unknown) =>
+        console.error("Erreur chargement galerie:", error),
+      );
+  });
 
-
-const btnPrevGallery = document.getElementById("btn-prev-gallery");
-if (btnPrevGallery) {
+  const btnPrevGallery = document.getElementById("btn-prev-gallery");
+  if (btnPrevGallery) {
     btnPrevGallery.addEventListener("click", () => {
-        if (!currentLinks.prev) return;
-        prev(currentLinks)
-            .then((data: any) => {
-                currentLinks = data.links;
-                display_galerie(data);
-            })
-            .catch((error: unknown) => console.error("Erreur chargement galerie précédente:", error));
+      if (!currentLinks.prev) return;
+      prev(currentLinks)
+        .then((data: any) => {
+          currentLinks = data.links;
+          display_galerie(data);
+        })
+        .catch((error: unknown) =>
+          console.error("Erreur chargement galerie précédente:", error),
+        );
     });
-}
+  }
 
-const btnNextGallery = document.getElementById("btn-next-gallery");
-if (btnNextGallery) {
+  const btnNextGallery = document.getElementById("btn-next-gallery");
+  if (btnNextGallery) {
     btnNextGallery.addEventListener("click", () => {
-        if (!currentLinks.next) return;
-        next(currentLinks)
-            .then((data: any) => {
-                currentLinks = data.links;
-                display_galerie(data);
-            })
-            .catch((error: unknown) => console.error("Erreur chargement galerie suivante:", error));
+      if (!currentLinks.next) return;
+      next(currentLinks)
+        .then((data: any) => {
+          currentLinks = data.links;
+          display_galerie(data);
+        })
+        .catch((error: unknown) =>
+          console.error("Erreur chargement galerie suivante:", error),
+        );
     });
-}
+  }
 
-const btnFirstGallery = document.getElementById("btn-first-gallery");
-if (btnFirstGallery) {
+  const btnFirstGallery = document.getElementById("btn-first-gallery");
+  if (btnFirstGallery) {
     btnFirstGallery.addEventListener("click", () => {
-        if (!currentLinks.first) return;
-        first(currentLinks)
-            .then((data: any) => {
-                currentLinks = data.links;
-                display_galerie(data);
-            })
-            .catch((error: unknown) => console.error("Erreur chargement première galerie:", error));
+      if (!currentLinks.first) return;
+      first(currentLinks)
+        .then((data: any) => {
+          currentLinks = data.links;
+          display_galerie(data);
+        })
+        .catch((error: unknown) =>
+          console.error("Erreur chargement première galerie:", error),
+        );
     });
+  }
+
+  const btnLastGallery = document.getElementById("btn-last-gallery");
+  if (btnLastGallery) {
+    btnLastGallery.addEventListener("click", () => {
+      if (!currentLinks.last) return;
+      last(currentLinks)
+        .then((data: any) => {
+          currentLinks = data.links;
+          display_galerie(data);
+        })
+        .catch((error: unknown) =>
+          console.error("Erreur chargement dernière galerie:", error),
+        );
+    });
+  }
 }
 
-const btnLastGallery = document.getElementById("btn-last-gallery");
-if (btnLastGallery) {
-    btnLastGallery.addEventListener("click", () => {
-        if (!currentLinks.last) return;
-        last(currentLinks)
-            .then((data: any) => {
-                currentLinks = data.links;
-                display_galerie(data);
-            })
-            .catch((error: unknown) => console.error("Erreur chargement dernière galerie:", error));
-    });
-}
+const currentPhoto = document.getElementById(
+  "la_photo",
+) as HTMLImageElement | null;
+const currentGallery = document.getElementById("la_galerie");
+if (currentPhoto && currentGallery) {
+  currentGallery.addEventListener("click", (e) => {
+    const target = e.target as HTMLElement;
+
+    const photoId = target.dataset.photoId;
+    console.log(photoId);
+    if (photoId) {
+      getPicture(parseInt(photoId));
+    }
+  });
 }
