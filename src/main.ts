@@ -36,10 +36,9 @@ const hash = window.location.hash;
 if (hash) {
   const id = parseInt(hash.substring(1));
   if (!isNaN(id)) {
-    getPicture(id);
+    // getPicture(id);
   }
 } else {
-  getPicture(106);
 }
 
 let currentLinks: {
@@ -157,19 +156,31 @@ if (btnGallery) {
   updateGalleryButtons();
 }
 
-const currentPhoto = document.getElementById(
-  "la_photo",
-) as HTMLImageElement | null;
 const currentGallery = document.getElementById("la_galerie");
-if (currentPhoto && currentGallery) {
+if (currentGallery) {
   currentGallery.addEventListener("click", (e) => {
     const target = e.target as HTMLElement;
-
     const photoId = target.closest<HTMLElement>("[data-photo-id]")?.dataset.photoId;
-    console.log(photoId);
     if (photoId) {
       getPicture(parseInt(photoId));
     }
   });
-
 }
+
+const lightbox = document.getElementById("lightbox");
+const btnClose = document.getElementById("lightbox-close");
+
+if (btnClose && lightbox) {
+  btnClose.addEventListener("click", () => {
+    lightbox.classList.add("hidden");
+  });
+}
+
+if (lightbox) {
+  lightbox.addEventListener("click", (e) => {
+    if (e.target === lightbox) {
+      lightbox.classList.add("hidden");
+    }
+  });
+}
+;

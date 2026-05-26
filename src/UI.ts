@@ -24,8 +24,10 @@ export function displayPicture(picture: Picture): void {
         descr: picture.photo.descr,
     });
 
-
-
+    const lightbox = document.getElementById("lightbox");
+    if (lightbox) {
+        lightbox.classList.remove("hidden");
+    }
 }
 
 
@@ -45,8 +47,9 @@ export function displayComments(commentsData: any): void {
         console.error("Conteneur de commentaires introuvable");
         return;
     }
+    container.innerHTML = "";
     const commentsArray = commentsData.comments;
-            const commentList = document.createElement("ul");
+    const commentList = document.createElement("ul");
 
     for (const comment of commentsArray) {
         const commentElement = document.createElement("li");
