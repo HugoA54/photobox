@@ -1,0 +1,6 @@
+#la_galerie {
+    display: flex;
+    flex-wrap: wrap;
+   
+}
+
