@@ -1,6 +1,6 @@
 import { loadPicture, loadResource } from "./photoloader.js";
 import { displayPicture, displayCategorie, displayComments } from "./UI.js";
-import { load } from "./gallery.js";
+import { load, next, prev } from "./gallery.js";
 import { display_galerie } from "./gallery_ui.js";
 
 function getPicture(id: number): void {
@@ -55,7 +55,7 @@ const btnPrevGallery = document.getElementById("btn-prev-gallery");
 if (btnPrevGallery) {
     btnPrevGallery.addEventListener("click", () => {
         if (!currentLinks.prev) return;
-        loadResource("https://webetu.iutnc.univ-lorraine.fr" + currentLinks.prev.href)
+        prev(currentLinks)
             .then((data: any) => {
                 currentLinks = data.links;
                 display_galerie(data);
@@ -68,7 +68,7 @@ const btnNextGallery = document.getElementById("btn-next-gallery");
 if (btnNextGallery) {
     btnNextGallery.addEventListener("click", () => {
         if (!currentLinks.next) return;
-        loadResource("https://webetu.iutnc.univ-lorraine.fr" + currentLinks.next.href)
+        next(currentLinks)
             .then((data: any) => {
                 currentLinks = data.links;
                 display_galerie(data);
