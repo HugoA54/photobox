@@ -1,6 +1,5 @@
 import { loadPicture, loadResource } from "./photoloader.js";
 import { displayPicture, displayCategorie, displayComments } from "./UI.js";
-import { API_BASE_URL } from "./config.js";
 import { load } from "./gallery.js";
 import { display_galerie } from "./gallery_ui.js";
 
@@ -38,11 +37,44 @@ if (hash) {
     }
 }
 
+let currentLinks: { next?: { href: string }; prev?: { href: string } } = {};
+
 const btnGallery = document.getElementById("btn-load-gallery");
 if (btnGallery) {
     btnGallery.addEventListener("click", () => {
         load()
-            .then(display_galerie)
+            .then((data) => {
+                currentLinks = data.links;
+                display_galerie(data);
+            })
             .catch((error: unknown) => console.error("Erreur chargement galerie:", error));
     });
+
+
+const btnPrevGallery = document.getElementById("btn-prev-gallery");
+if (btnPrevGallery) {
+    btnPrevGallery.addEventListener("click", () => {
+        if (!currentLinks.prev) return;
+        loadResource("https://webetu.iutnc.univ-lorraine.fr" + currentLinks.prev.href)
+            .then((data: any) => {
+                currentLinks = data.links;
+                display_galerie(data);
+            })
+            .catch((error: unknown) => console.error("Erreur chargement galerie précédente:", error));
+    });
+}
+
+const btnNextGallery = document.getElementById("btn-next-gallery");
+if (btnNextGallery) {
+    btnNextGallery.addEventListener("click", () => {
+        if (!currentLinks.next) return;
+        loadResource("https://webetu.iutnc.univ-lorraine.fr" + currentLinks.next.href)
+            .then((data: any) => {
+                currentLinks = data.links;
+                display_galerie(data);
+            })
+            .catch((error: unknown) => console.error("Erreur chargement galerie suivante:", error));
+    });
+
+}
 }
