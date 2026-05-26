@@ -31,3 +31,16 @@ export function prev(currentLinks: Gallery["links"]): Promise<Gallery> {
     return loadResource("https://webetu.iutnc.univ-lorraine.fr" + currentLinks.prev.href);
 }
     
+export function first(currentLinks: Gallery["links"]): Promise<Gallery> {
+    if (!currentLinks.first) {
+        return Promise.reject(new Error("Pas de lien 'first' disponible"));
+    }
+    return loadResource("https://webetu.iutnc.univ-lorraine.fr" + currentLinks.first.href);
+}
+
+export function last(currentLinks: Gallery["links"]): Promise<Gallery> {
+    if (!currentLinks.last) {
+        return Promise.reject(new Error("Pas de lien 'last' disponible"));
+    }
+    return loadResource("https://webetu.iutnc.univ-lorraine.fr" + currentLinks.last.href);
+}
