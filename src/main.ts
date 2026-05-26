@@ -1,6 +1,6 @@
 import { loadPicture, loadResource } from "./photoloader.js";
 import { displayPicture, displayCategorie, displayComments } from "./UI.js";
-import { load, next, prev } from "./gallery.js";
+import { first, last, load, next, prev } from "./gallery.js";
 import { display_galerie } from "./gallery_ui.js";
 
 function getPicture(id: number): void {
@@ -37,7 +37,7 @@ if (hash) {
     }
 }
 
-let currentLinks: { next?: { href: string }; prev?: { href: string } } = {};
+let currentLinks: { next?: { href: string }; prev?: { href: string }; first?: { href: string }; last?: { href: string } } = {};
 
 const btnGallery = document.getElementById("btn-load-gallery");
 if (btnGallery) {
@@ -75,6 +75,31 @@ if (btnNextGallery) {
             })
             .catch((error: unknown) => console.error("Erreur chargement galerie suivante:", error));
     });
+}
 
+const btnFirstGallery = document.getElementById("btn-first-gallery");
+if (btnFirstGallery) {
+    btnFirstGallery.addEventListener("click", () => {
+        if (!currentLinks.first) return;
+        first(currentLinks)
+            .then((data: any) => {
+                currentLinks = data.links;
+                display_galerie(data);
+            })
+            .catch((error: unknown) => console.error("Erreur chargement première galerie:", error));
+    });
+}
+
+const btnLastGallery = document.getElementById("btn-last-gallery");
+if (btnLastGallery) {
+    btnLastGallery.addEventListener("click", () => {
+        if (!currentLinks.last) return;
+        last(currentLinks)
+            .then((data: any) => {
+                currentLinks = data.links;
+                display_galerie(data);
+            })
+            .catch((error: unknown) => console.error("Erreur chargement dernière galerie:", error));
+    });
 }
 }
