@@ -19,6 +19,8 @@ Application web de galerie photo interactive développée en TypeScript.
 
 ## Fonctionnalités rajoutée
 
+- **Navigation clavier dans le lightbox** : touches fléchées gauche/droite pour changer de photo, Échap pour fermer
+- **Compteur de photos** : affichage de la position actuelle dans la galerie (ex : 3 / 12)
 
 
 ## Structure des fichiers
