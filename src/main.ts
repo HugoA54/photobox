@@ -6,6 +6,17 @@ import type { Picture } from "./UI.js";
 
 let currentPhotoId: number | null = null;
 
+function updateCounter(photoId: number): void {
+  const gallery = document.getElementById("la_galerie");
+  const counter = document.getElementById("lightbox-counter");
+  if (!gallery || !counter) return;
+  const figures = Array.from(gallery.querySelectorAll<HTMLElement>("[data-photo-id]"));
+  const index = figures.findIndex((f) => parseInt(f.dataset.photoId!) === photoId);
+  if (index !== -1) {
+    counter.textContent = `${index + 1} / ${figures.length}`;
+  }
+}
+
 function getPicture(id: number): void {
   currentPhotoId = id;
   loadPicture(id)
