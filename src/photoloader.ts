@@ -1,30 +1,5 @@
 import { API_BASE_URL } from "./config.js";
-
-export interface PhotoItem {
-  photo: {
-    id: number;
-    titre: string;
-    file: string;
-    thumbnail: { href: string };
-    original: { href: string };
-  };
-  links: {
-    self: { href: string };
-  };
-}
-
-export interface PhotoCollection {
-  type: string;
-  count: number;
-  size: number;
-  links: {
-    next?: { href: string };
-    prev?: { href: string };
-    last?: { href: string };
-    first?: { href: string };
-  };
-  photos: PhotoItem[];
-}
+import type { PhotoCollection } from "./PhotoCollection.js";
 
 export function loadPhotos(): Promise<PhotoCollection> {
   return loadResource(`${API_BASE_URL}/photos`);

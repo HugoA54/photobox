@@ -1,5 +1,6 @@
 import { loadPhotos, loadResource } from "./photoloader.js";
-import type { PhotoItem, PhotoCollection } from "./photoloader.js";
+import type { PhotoItem } from "./PhotoItem.js";
+import type { PhotoCollection } from "./PhotoCollection.js";
 
 export interface Gallery {
   photos: PhotoItem[];

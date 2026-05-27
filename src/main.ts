@@ -200,7 +200,7 @@ if (lightbox) {
 
 
 
-function navigateLightbox(direction: 1 | -1): void {
+function navigateLightbox(direction: number): void {
   if (currentPhotoId) {
   const gallery = document.getElementById("la_galerie");
   if (gallery) {
@@ -220,7 +220,8 @@ document.getElementById("lightbox-next")?.addEventListener("click", () => naviga
 
 document.addEventListener("keydown", (e) => {
   if (!lightbox || lightbox.classList.contains("hidden")) return;
-  if (e.key === "ArrowRight") navigateLightbox(1);
-  else if (e.key === "ArrowLeft") navigateLightbox(-1);
-  else if (e.key === "Escape") lightbox.classList.add("hidden");
+  if (e.key === "Escape") lightbox.classList.add("hidden");
+  else if (e.key === "ArrowLeft") navigateLightbox(-1); 
+  else if (e.key === "ArrowRight") navigateLightbox(1); 
+
 });
