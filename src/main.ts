@@ -2,7 +2,6 @@ import { loadPicture, loadResource } from "./photoloader.js";
 import { displayPicture, displayCategorie, displayComments } from "./UI.js";
 import { first, last, load, next, prev } from "./gallery.js";
 import { display_galerie } from "./gallery_ui.js";
-import type { Picture } from "./UI.js";
 
 let currentPhotoId: number | null = null;
 
@@ -19,6 +18,7 @@ function updateCounter(photoId: number): void {
 
 function getPicture(id: number): void {
   currentPhotoId = id;
+  updateCounter(id);
   loadPicture(id)
     .then((p: any) => {
       displayPicture(p);
@@ -217,3 +217,10 @@ function navigateLightbox(direction: 1 | -1): void {
 
 document.getElementById("lightbox-prev")?.addEventListener("click", () => navigateLightbox(-1));
 document.getElementById("lightbox-next")?.addEventListener("click", () => navigateLightbox(1));
+
+document.addEventListener("keydown", (e) => {
+  if (!lightbox || lightbox.classList.contains("hidden")) return;
+  if (e.key === "ArrowRight") navigateLightbox(1);
+  else if (e.key === "ArrowLeft") navigateLightbox(-1);
+  else if (e.key === "Escape") lightbox.classList.add("hidden");
+});
