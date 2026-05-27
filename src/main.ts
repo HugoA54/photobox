@@ -1,5 +1,8 @@
 import { loadPicture, loadResource } from "./photoloader.js";
 import { displayPicture, displayCategorie, displayComments } from "./UI.js";
+import type { PictureDetail } from "./PictureDetail.js";
+import type { Categorie } from "./Categorie.js";
+import type { CommentsCollection } from "./CommentsCollection.js";
 import { first, last, load, next, prev } from "./gallery.js";
 import { display_galerie } from "./gallery_ui.js";
 
@@ -20,13 +23,13 @@ function getPicture(id: number): void {
   currentPhotoId = id;
   updateCounter(id);
   loadPicture(id)
-    .then((p: any) => {
+    .then((p: PictureDetail) => {
       displayPicture(p);
       return Promise.all([getCategorie(p), getComments(p)]);
     })
-    .then((data_array: any[]) => {
-      displayCategorie(data_array[0]);
-      displayComments(data_array[1]);
+    .then(([categorie, comments]: [Categorie, CommentsCollection]) => {
+      displayCategorie(categorie);
+      displayComments(comments);
     })
 
     .catch((error: unknown) => {
@@ -34,14 +37,14 @@ function getPicture(id: number): void {
     });
 }
 
-function getCategorie(imageData: any): Promise<any> {
-  return loadResource(
+function getCategorie(imageData: PictureDetail): Promise<Categorie> {
+  return loadResource<Categorie>(
     "https://webetu.iutnc.univ-lorraine.fr" + imageData.links.categorie.href,
   );
 }
 
-function getComments(imageData: any): Promise<any> {
-  return loadResource(
+function getComments(imageData: PictureDetail): Promise<CommentsCollection> {
+  return loadResource<CommentsCollection>(
     "https://webetu.iutnc.univ-lorraine.fr" + imageData.links.comments.href,
   );
 }
@@ -82,7 +85,7 @@ if (btnGallery) {
     btnPrevGallery.addEventListener("click", () => {
       if (!currentLinks.prev) return;
       prev(currentLinks)
-        .then((data: any) => {
+        .then((data) => {
           currentLinks = data.links;
           display_galerie(data);
           updateGalleryButtons();
@@ -98,7 +101,7 @@ if (btnGallery) {
     btnNextGallery.addEventListener("click", () => {
       if (!currentLinks.next) return;
       next(currentLinks)
-        .then((data: any) => {
+        .then((data) => {
           currentLinks = data.links;
           display_galerie(data);
           updateGalleryButtons();
@@ -114,7 +117,7 @@ if (btnGallery) {
     btnFirstGallery.addEventListener("click", () => {
       if (!currentLinks.first) return;
       first(currentLinks)
-        .then((data: any) => {
+        .then((data) => {
           currentLinks = data.links;
           display_galerie(data);
           updateGalleryButtons();
@@ -130,7 +133,7 @@ if (btnGallery) {
     btnLastGallery.addEventListener("click", () => {
       if (!currentLinks.last) return;
       last(currentLinks)
-        .then((data: any) => {
+        .then((data) => {
           currentLinks = data.links;
           display_galerie(data);
           updateGalleryButtons();

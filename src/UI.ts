@@ -1,13 +1,9 @@
 import Handlebars from "handlebars";
+import type { PictureDetail } from "./PictureDetail.js";
+import type { Categorie } from "./Categorie.js";
+import type { CommentsCollection } from "./CommentsCollection.js";
 
-export interface Picture {
-    titre: string;
-    url: { href: string };
-    descr: string;
-    categorie: string;
-}
-
-export function displayPicture(picture: Picture): void {
+export function displayPicture(picture: PictureDetail): void {
     const templateSource = document.getElementById("photo-template") as HTMLScriptElement;
     const container = document.getElementById("la_photo");
 
@@ -29,8 +25,7 @@ export function displayPicture(picture: Picture): void {
     }
 }
 
-
-export function displayCategorie(categorieData: any): void {
+export function displayCategorie(categorieData: Categorie): void {
     const templateSource = document.getElementById("categorie-template") as HTMLScriptElement;
     const container = document.getElementById("la_categorie");
     if (!templateSource || !container) return;
@@ -38,7 +33,7 @@ export function displayCategorie(categorieData: any): void {
     container.innerHTML = template({ nom: categorieData.categorie.nom });
 }
 
-export function displayComments(commentsData: any): void {
+export function displayComments(commentsData: CommentsCollection): void {
     const templateSource = document.getElementById("comments-template") as HTMLScriptElement;
     const container = document.getElementById("les_commentaires");
     if (!templateSource || !container) return;
